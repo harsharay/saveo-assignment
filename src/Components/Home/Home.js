@@ -28,8 +28,6 @@ const Home = (props) => {
         long: ""
     })
 
-    useEffect(() => console.log(process.env),[])
-
     const handleInputChange = e => {
         let name = e.target.name
         let value = e.target.value
