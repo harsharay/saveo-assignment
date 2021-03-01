@@ -27,19 +27,6 @@ const Home = (props) => {
         long: ""
     })
 
-    // useEffect(() => {
-    //     setCurrentIndex(allMarkedLocations.length)
-    //     console.log(allMarkedLocations.length)
-    // },[allMarkedLocations])
-
-    // const triangleCoords = [
-    //     {lat: 16.5479, lng: 80.677},
-    //     {lat: 17.7238, lng: 83.1599},
-    //     {lat: 18.3923, lng: 78.8201}
-    //     // {lat: 32.321, lng: -64.757},
-    //     // {lat: 25.774, lng: -80.190}
-    //   ];
-
     const handleInputChange = e => {
         let name = e.target.name
         let value = e.target.value
@@ -54,7 +41,7 @@ const Home = (props) => {
 
     const handleAddMarkers = () => {
         console.log(40)
-        if(currentIndex <= 5){
+        if(currentIndex < 5){
             const { locationName, lat, lng } = input
             let currentState = allMarkedLocations
             console.log(65,currentIndex)
@@ -66,21 +53,7 @@ const Home = (props) => {
                 }
             }
 
-            setAllMarkedLocations(
-                // prev => {
-                // return [
-                //     ...prev,
-                //     {
-                //         name: locationName,
-                //         position: {
-                //             lat,
-                //             lng
-                //         }
-                //     }
-                // ]
-                currentState
-            // }
-            )
+            setAllMarkedLocations(currentState)
             setCurrentIndex(currentIndex+1)
 
             setAllMarkedLatLng(prev => {
@@ -102,24 +75,27 @@ const Home = (props) => {
         const { latLng } = coord;
         const currentLat = latLng.lat();
         const currentLng = latLng.lng();
-        let currentLocation = ""
 
         
         fetch(GET_LOCATION.replace("__LATLONG__",String(latLng.lat())+","+String(latLng.lng())))
         .then(data => data.json())
         .then(json => {
             console.log(json.plus_code.compound_code)
-            let cityName = json.plus_code.compound_code.split(",")[0]
-            cityName = cityName.substr(cityName.indexOf(" ")+1)
+            if(json.plus_code.compound_code){
+                let cityName = json.plus_code.compound_code.split(",")[0]
+                cityName = cityName.substr(cityName.indexOf(" ")+1)
 
-            setInput(prev => {
-                return {
-                    ...prev,
-                    locationName: cityName,
-                    lat: currentLat,
-                    lng: currentLng
-                }
-            })
+                setInput(prev => {
+                    return {
+                        ...prev,
+                        locationName: cityName,
+                        lat: currentLat.toFixed(4),
+                        lng: currentLng.toFixed(4)
+                    }
+                })
+            } else {
+                alert("select another place")
+            }
         })     
     }
     
@@ -175,13 +151,12 @@ const Home = (props) => {
                     <div className="map1">
                         <Map
                             google={props.google}
-                            style={{ width: "25% !important", margin: "auto", height: "41% !important" }}
                             initialCenter={{
                                 lat: 17.380275415679968,
                                 lng: 78.48421990628647 
                             }}
                             className="actualMap"
-                            zoom={6}
+                            zoom={5}
                             onClick={handleClick}
                         >
                         {allMarkedLocations.map((marker, index) => (
