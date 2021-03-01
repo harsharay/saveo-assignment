@@ -89,8 +89,8 @@ const Home = (props) => {
                     return {
                         ...prev,
                         locationName: cityName,
-                        lat: currentLat.toFixed(4),
-                        lng: currentLng.toFixed(4)
+                        lat: currentLat,
+                        lng: currentLng
                     }
                 })
             } else {
