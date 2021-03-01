@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/saveo-assignment/static/css/main.2acc83ea.chunk.css",
-    "main.js": "/saveo-assignment/static/js/main.772e089e.chunk.js",
-    "main.js.map": "/saveo-assignment/static/js/main.772e089e.chunk.js.map",
+    "main.js": "/saveo-assignment/static/js/main.537119fa.chunk.js",
+    "main.js.map": "/saveo-assignment/static/js/main.537119fa.chunk.js.map",
     "runtime-main.js": "/saveo-assignment/static/js/runtime-main.02f99c2b.js",
     "runtime-main.js.map": "/saveo-assignment/static/js/runtime-main.02f99c2b.js.map",
     "static/js/2.69e231ab.chunk.js": "/saveo-assignment/static/js/2.69e231ab.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.02f99c2b.js",
     "static/js/2.69e231ab.chunk.js",
     "static/css/main.2acc83ea.chunk.css",
-    "static/js/main.772e089e.chunk.js"
+    "static/js/main.537119fa.chunk.js"
   ]
 }
