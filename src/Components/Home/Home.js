@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {Map, InfoWindow, Marker, GoogleApiWrapper, Polygon, Polyline} from 'google-maps-react';
 // import { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+import { dummyMarkedLocations } from "../../dummyData"
 import { GET_LOCATION } from "../../constants"
 
 
@@ -8,10 +9,12 @@ import "./Home.css"
 
 const Home = (props) => {
 
-    const [allMarkedLocations, setAllMarkedLocations] = useState([]) 
+    const [allMarkedLocations, setAllMarkedLocations] = useState(dummyMarkedLocations) 
     const [allMarkedLatLng, setAllMarkedLatLng] = useState([])
 
     const [clickRoute, setClickRoute] = useState(false)
+
+    const [currentIndex, setCurrentIndex] = useState(0)
 
     const [input, setInput] = useState({
         locationName: "",
@@ -23,6 +26,11 @@ const Home = (props) => {
         lat: "",
         long: ""
     })
+
+    // useEffect(() => {
+    //     setCurrentIndex(allMarkedLocations.length)
+    //     console.log(allMarkedLocations.length)
+    // },[allMarkedLocations])
 
     // const triangleCoords = [
     //     {lat: 16.5479, lng: 80.677},
@@ -46,21 +54,34 @@ const Home = (props) => {
 
     const handleAddMarkers = () => {
         console.log(40)
-        if(allMarkedLocations.length < 5){
+        if(currentIndex <= 5){
             const { locationName, lat, lng } = input
+            let currentState = allMarkedLocations
+            console.log(65,currentIndex)
+            currentState[currentIndex] = {
+                name: locationName,
+                position: {
+                    lat,
+                    lng
+                }
+            }
 
-            setAllMarkedLocations(prev => {
-                return [
-                    ...prev,
-                    {
-                        name: locationName,
-                        position: {
-                            lat,
-                            lng
-                        }
-                    }
-                ]
-            })
+            setAllMarkedLocations(
+                // prev => {
+                // return [
+                //     ...prev,
+                //     {
+                //         name: locationName,
+                //         position: {
+                //             lat,
+                //             lng
+                //         }
+                //     }
+                // ]
+                currentState
+            // }
+            )
+            setCurrentIndex(currentIndex+1)
 
             setAllMarkedLatLng(prev => {
                 return [
