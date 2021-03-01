@@ -6,6 +6,7 @@ import { GET_LOCATION } from "../../constants"
 
 
 import "./Home.css"
+require('dotenv').config()
 
 const Home = (props) => {
 
@@ -26,6 +27,8 @@ const Home = (props) => {
         lat: "",
         long: ""
     })
+
+    useEffect(() => console.log(process.env),[])
 
     const handleInputChange = e => {
         let name = e.target.name
@@ -76,8 +79,10 @@ const Home = (props) => {
         const currentLat = latLng.lat();
         const currentLng = latLng.lng();
 
+        let getLocationURL = GET_LOCATION.replace("__LATLONG__",String(latLng.lat())+","+String(latLng.lng()))
+        getLocationURL = getLocationURL.replace("__APIKEY__", process.env.REACT_APP_API_KEY)
         
-        fetch(GET_LOCATION.replace("__LATLONG__",String(latLng.lat())+","+String(latLng.lng())))
+        fetch(getLocationURL)
         .then(data => data.json())
         .then(json => {
             console.log(json.plus_code.compound_code)
@@ -181,4 +186,4 @@ const Home = (props) => {
     )
 }
 
-export default GoogleApiWrapper({apiKey: "AIzaSyCicw2MoonjgBscZpmaYwPiVhfs287UQ84"})(Home)
+export default GoogleApiWrapper({apiKey: process.env.REACT_APP_API_KEY })(Home)

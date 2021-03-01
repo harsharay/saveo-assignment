@@ -1,1 +1,1 @@
-export const GET_LOCATION = "https://maps.googleapis.com/maps/api/geocode/json?latlng=__LATLONG__&sensor=true&key=AIzaSyDt739iU582nmJlv5eK5HdQgGH7QQ4dEg8"
+export const GET_LOCATION = "https://maps.googleapis.com/maps/api/geocode/json?latlng=__LATLONG__&sensor=true&key=__APIKEY__"
