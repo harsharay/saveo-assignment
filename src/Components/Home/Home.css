@@ -53,6 +53,8 @@
     border: none;
     border-radius: 4px;
     outline: none;
+    font-family: 'Lato', sans-serif;
+
 }
 
 .top-block-button {
@@ -81,13 +83,18 @@
 
 .display-coordinates {
     background-color: white;
-    width: 50%;
-    height: 17.6rem;
-    margin-left: -42px;
+    width: 56%;
+    height: 21.2rem;
+    margin-left: -38px;
     text-align: left;
-    padding: 50px;
+    padding: 20px;
     color: #123043;
     border-radius: 0 0 0 36px;
+    /* border: 2px solid red; */
+}
+
+.display-coordinates-content {
+    /* margin-top: -50px; */
 }
 
 .display-coordinates > p {
@@ -100,22 +107,29 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    text-align: left;
     font-size: 14px;
     /* border: 2px solid blue; */
 }
 
+.header-group p {
+    /* border: 2px solid black; */
+    text-align: left;
+    width: 50%;
+}
+
+.locations-data {
+    font-weight: 700;
+}
+
 .map1 {
     width: 30%;
-    /* background-color: red;
-    border: 2px solid green; */
-
 }
 
 .actualMap {
     position: relative;
-    top: 234px;
-    right: 420px;
+    top: 232px;
+    right: 421px;
     border-radius: 0 0 36px 0 !important;
     height: 40% !important;
     width: 23% !important;
@@ -137,4 +151,6 @@
 
     font-size: 14px;
     font-weight: 700;
+
+    cursor: pointer;
 }

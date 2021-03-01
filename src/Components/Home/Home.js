@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+import {Map, InfoWindow, Marker, GoogleApiWrapper, Polygon, Polyline} from 'google-maps-react';
+// import { withGoogleMap, GoogleMap, DirectionsRenderer } from 'react-google-maps';
+import { GET_LOCATION } from "../../constants"
 
 
 import "./Home.css"
@@ -8,6 +9,9 @@ import "./Home.css"
 const Home = (props) => {
 
     const [allMarkedLocations, setAllMarkedLocations] = useState([]) 
+    const [allMarkedLatLng, setAllMarkedLatLng] = useState([])
+
+    const [clickRoute, setClickRoute] = useState(false)
 
     const [input, setInput] = useState({
         locationName: "",
@@ -19,6 +23,14 @@ const Home = (props) => {
         lat: "",
         long: ""
     })
+
+    // const triangleCoords = [
+    //     {lat: 16.5479, lng: 80.677},
+    //     {lat: 17.7238, lng: 83.1599},
+    //     {lat: 18.3923, lng: 78.8201}
+    //     // {lat: 32.321, lng: -64.757},
+    //     // {lat: 25.774, lng: -80.190}
+    //   ];
 
     const handleInputChange = e => {
         let name = e.target.name
@@ -41,7 +53,7 @@ const Home = (props) => {
                 return [
                     ...prev,
                     {
-                        name: "locationName",
+                        name: locationName,
                         position: {
                             lat,
                             lng
@@ -49,29 +61,50 @@ const Home = (props) => {
                     }
                 ]
             })
+
+            setAllMarkedLatLng(prev => {
+                return [
+                    ...prev,
+                    {
+                        lat,
+                        lng
+                    }
+                ]
+            })
+        }else {
+            alert("Limit is 5")
         }
     }
     
 
     const handleClick = (t, map, coord) => {
-        console.log("click")
-        console.log(21,coord)
         const { latLng } = coord;
         const currentLat = latLng.lat();
         const currentLng = latLng.lng();
+        let currentLocation = ""
 
-        setInput(prev => {
-            return {
-                ...prev,
-                locationName: "empty",
-                lat: currentLat,
-                lng: currentLng
-            }
-        })
-     
+        
+        fetch(GET_LOCATION.replace("__LATLONG__",String(latLng.lat())+","+String(latLng.lng())))
+        .then(data => data.json())
+        .then(json => {
+            console.log(json.plus_code.compound_code)
+            let cityName = json.plus_code.compound_code.split(",")[0]
+            cityName = cityName.substr(cityName.indexOf(" ")+1)
+
+            setInput(prev => {
+                return {
+                    ...prev,
+                    locationName: cityName,
+                    lat: currentLat,
+                    lng: currentLng
+                }
+            })
+        })     
     }
     
-
+    const handleShowRoute = () => {
+        setClickRoute(true)
+    }
 
     return (
         <div className="home-root">
@@ -98,7 +131,7 @@ const Home = (props) => {
                 <div className="bottom-group">
                     <div className="display-coordinates">
                         <p>All Coordinates</p>
-                        <div>
+                        <div className="display-coordinates-content">
                             <div className="header-group">
                                 <p>My coordinates</p>
                                 <p>Default</p>
@@ -115,7 +148,7 @@ const Home = (props) => {
                                     )
                                 })} 
                             </div>
-                            <button>Show Route</button>
+                            <button onClick={handleShowRoute}>Show Route</button>
                         </div>
                     </div>
                     <div className="map1">
@@ -130,12 +163,20 @@ const Home = (props) => {
                             zoom={6}
                             onClick={handleClick}
                         >
-                            {allMarkedLocations.map((marker, index) => (
-                                <Marker
-                                key={index}
-                                position={marker.position}
+                        {allMarkedLocations.map((marker, index) => (
+                            <Marker
+                            key={index}
+                            position={marker.position}
                             />
                         ))}
+                        {(clickRoute && allMarkedLatLng.length>0) && <Polyline
+                            path={allMarkedLatLng}
+                            strokeColor="#000000"
+                            strokeOpacity={1}
+                            strokeWeight={5}
+                            fillColor="#000000"
+                            fillOpacity={0.35} 
+                        />}
                         </Map>
                     </div>
                 </div>
